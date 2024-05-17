@@ -37,11 +37,20 @@ def create_voxel(xyz_list):
 	d_max = max(diffs)
 	voxel_size = d_max / resolution
 	dimensions = (math.ceil(diffs[0] / voxel_size), math.ceil(diffs[1] / voxel_size), math.ceil(diffs[2] / voxel_size))
-	voxel = np.zeros(dimensions, dtype=int)
+	voxel = np.zeros(dimensions, dtype=np.uint8)
 	p_array = xyz_array.reshape([n, 3])
 	for p in tqdm(p_array):
 		q = p_to_q(p, mins, d_max, dimensions)
-		voxel[q[0], q[1], q[2]] += 1
+		if voxel[q[0], q[1], q[2]] < 127:
+			voxel[q[0], q[1], q[2]] += 1
+	return voxel
+
+def enhance_voxel(voxel):
+	for vz in tqdm(voxel):
+		for vy in vz:
+			for vx in vy:
+				if vx > 0:
+					vx = 127
 	return voxel
 
 def main():
@@ -53,7 +62,8 @@ def main():
 		xyz_list = xyz.read().split()
 	print('done', file=sys.stderr)
 	voxel = create_voxel(xyz_list)
-	np.save(vxl_filename, voxel)
+	enhanced_voxel = enhance_voxel(voxel)
+	np.save(vxl_filename, enhanced_voxel)
 
 if __name__ == '__main__':
 	main()

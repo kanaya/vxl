@@ -16,7 +16,6 @@ img_filename = args.img_file
 def write_voxel_to_image(voxel):
 	for z, vz in enumerate(tqdm(voxel)):
 		output_filename = '{}-{:04}.png'.format(img_filename, z)
-		vz *= 255
 		cv2.imwrite(output_filename, vz)
 
 def main():
