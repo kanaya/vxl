@@ -32,14 +32,13 @@ def create_voxel(xyz_list):
 	mins = [x_min, y_min, z_min]
 	diffs = [x_max - x_min, y_max - y_min, z_max - z_min]
 	d_max = max(diffs)
-	voxel_size = d_max / (resolution + 1)
-	dimensions = (math.ceil(diffs[0] / voxel_size), math.ceil(diffs[1] / voxel_size), math.ceil(diffs[2] / voxel_size))
+	voxel_size = d_max / resolution
+	dimensions = (math.ceil(diffs[0] / voxel_size) + 1, math.ceil(diffs[1] / voxel_size) + 1, math.ceil(diffs[2] / voxel_size) + 1)
 	print('dimensions = {}'.format(dimensions))
 	voxel = np.zeros(dimensions, dtype=int)
 	p_array = xyz_array.reshape([n, 3])
-	for p in p_array:
+	for p in tqdm(p_array):
 		q = p_to_q(p, mins, d_max)
-		print(q)
 		voxel[q[0], q[1], q[2]] += 1
 	return voxel
 
@@ -52,7 +51,7 @@ def main():
 		xyz_list = xyz.read().split()
 	print('done', file=sys.stderr)
 	voxel = create_voxel(xyz_list)
-	print(voxel)
+	np.save(vxl_filename, voxel)
 
 if __name__ == '__main__':
 	main()
