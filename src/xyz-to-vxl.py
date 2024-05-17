@@ -7,7 +7,7 @@ from tqdm import tqdm
 parser = argparse.ArgumentParser()
 parser.add_argument('xyz_file', help='XYZ file (input)')
 parser.add_argument('vxl_file', help='VXL file (output)')
-parser.add_argument('-r', '--resolution', type=int, default=500, help='Maximum resolution (default: 500)')
+parser.add_argument('-r', '--resolution', type=int, default=511, help='Maximum resolution (default: 511)')
 args = parser.parse_args()
 
 xyz_filename = args.xyz_file
