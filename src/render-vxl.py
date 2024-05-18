@@ -15,9 +15,8 @@ vxl_filename = args.vxl_file
 
 def render(voxel):
     volume_data = voxel
-    print(volume_data.dtype)
     dataImporter = vtk.vtkImageImport()
-    data_string = volume_data.tostring()
+    data_string = volume_data.tobytes()
     dataImporter.CopyImportVoidPointer(data_string, len(data_string))
 
     dataImporter.SetDataScalarType(VTK_UNSIGNED_CHAR)

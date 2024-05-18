@@ -37,6 +37,7 @@ def create_voxel(xyz_list):
 	d_max = max(diffs)
 	voxel_size = d_max / resolution
 	dimensions = (math.ceil(diffs[0] / voxel_size), math.ceil(diffs[1] / voxel_size), math.ceil(diffs[2] / voxel_size))
+	print('Dimensions are {}'.format(dimensions))
 	voxel = np.zeros(dimensions, dtype=np.uint8)
 	p_array = xyz_array.reshape([n, 3])
 	for p in tqdm(p_array):
@@ -55,7 +56,7 @@ def enhance_voxel(voxel):
 
 def main():
 	print('# Given parameters are:\n'
-		'#   --resolution {}\n'
+		'#   --resolution {}'
 		.format(resolution))
 	print('Reading {}... '.format(xyz_filename), end='', file=sys.stderr)
 	with open(xyz_filename, 'r') as xyz:
