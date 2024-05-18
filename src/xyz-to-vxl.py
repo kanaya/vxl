@@ -7,7 +7,7 @@ from tqdm import tqdm
 parser = argparse.ArgumentParser()
 parser.add_argument('xyz_file', help='XYZ file (input)')
 parser.add_argument('vxl_file', help='VXL file (output)')
-parser.add_argument('-e', '--enhancement', type=float, default=0, help='Enhancement factor (default: 0)')
+parser.add_argument('-e', '--enhancement', action='store_true', help='Auto enhancement (default: false)')
 parser.add_argument('-g', '--geo', action='store_true', help='Geo-coordinate system (default: false)')
 parser.add_argument('-r', '--resolution', type=int, default=512, help='Maximum resolution (default: 512)')
 args = parser.parse_args()
@@ -59,11 +59,14 @@ def create_voxel(xyz_list):
 
 def enhance_voxel(voxel):
 	print('Enhancing voxel image', file=sys.stderr)
+	flat_voxel = voxel.flatten()
+	m = max(flat_voxel)
+	factor = 255.0 / m
 	for vz in tqdm(voxel):
 		for vy in vz:
 			for vx in vy:
 				if vx > 0:
-					vx = int(min(vx * enhancement, 255))
+					vx = int(min(vx * factor, 255))
 	return voxel
 
 def main():
@@ -76,7 +79,7 @@ def main():
 	with open(xyz_filename, 'r') as xyz:
 		xyz_list = xyz.read().split()
 	voxel = create_voxel(xyz_list)
-	if enhancement > 1:
+	if enhancement:
 		enhanced_voxel = enhance_voxel(voxel)
 		np.save(vxl_filename, enhanced_voxel)
 	else:
