@@ -26,13 +26,13 @@ def render(voxel):
 
     alphaChannelFunc = vtk.vtkPiecewiseFunction()
     alphaChannelFunc.AddPoint(0, 0.0)
-    alphaChannelFunc.AddPoint(127, 0.5)
+    alphaChannelFunc.AddPoint(63, 0.5)
     alphaChannelFunc.AddPoint(255, 1.0)
 
     colorFunc = vtk.vtkColorTransferFunction()
     colorFunc.AddRGBPoint(0, 0.0, 0.0, 0.0)
-    colorFunc.AddRGBPoint(63, 0.0, 0.0, 1.0)
-    colorFunc.AddRGBPoint(127, 1.0, 1.0, 0.0)
+    colorFunc.AddRGBPoint(15, 0.0, 0.0, 1.0)
+    colorFunc.AddRGBPoint(63, 1.0, 1.0, 0.0)
     colorFunc.AddRGBPoint(255, 1.0, 1.0, 1.0)
 
     volumeProperty = vtk.vtkVolumeProperty()
